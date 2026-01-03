@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
+        }
+        button{
+            font-size: var(--size);
+            cursor: pointer;
+            
+        }
+        :root{
+            --graycolor:rgb(112, 111, 111);
+            --size:1.1rem;
+            --blue:rgb(0, 68, 255);
+        }
+        body{
+            
+            height: 100vh;
+            font-family: "roboto";
+        }
+        .container{
+            position: absolute;
+            left: 50%;
+            top: 60%;
+            transform: translateY(-50%) translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            
+            margin: auto;
+            min-height: 100vh;
+            gap: 10px;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 0 7px 0.2px rgba(0, 0, 0, 0.445);
+        }
+       
+        .Active{
+            color: #00FF00;
+        }
+        .inActive{
+            color: red;
+        }
+        .info{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            font-size: var(--size);
+            position: relative;
+            padding: 10px 0;
+        }
+        .info::after{
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left:0;
+            width: calc(100%);
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.267);
+        }
+        .info p{
+            color: rgb(112, 111, 111);
+        }
+        .info p span{
+            color: black;
+            font-weight: 600;
+            padding-right: 5px;
+        }
+        .info button{
+            padding: 5px;
+            border:0.5px solid var(--graycolor) ;
+            background-color: white;
+            font-size:var(--size);
+            text-align: center;
+            vertical-align: center;
+            display: flex;
+            
+            align-items: center;
+            letter-spacing: 2px;
+        }
+        .info button span{
+            font-size: 12px;
+            padding-right: 6px;
+        }
+        .editting{
+            
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .editting button{
+            padding: 8px;
+            background-color: var(--blue);
+            color: white;
+            border: 1px solid var(--blue);
+            transition: 0.1s;
+            border-radius: 10px;
+            letter-spacing: 2px;
+        }
+        .editting button:hover{
+            background-color: transparent;
+            color: var(--blue);
+        }
+        .editting button span{
+            padding: 0 5px 0 0;
+            font-size: 1.2;
+            
+        }
+        .table{
+            width: 100%;
+            font-size: var(--size);
+        }
+        table{
+            text-align: center;
+            border-spacing: 0;
+            width: 100%;
+        }
+        .table thead{
+            background-color:  #aaaaaa91;
+            width: 100%;
+            padding: 10px;
+        }
+        th,td{
+            padding: 1em 0;
+            letter-spacing: 2px;
+            font-size: var(--size);
+        }
+        td{
+            font-weight: 800;
+            font-size: 1.3rem;
+        }
+        td span{
+            /* color: #00FF00; */
+            padding-right: 5px;
+            font-size: 0.6rem;
+            align-self: center;
+        }
+       
+        .layout{
+            width: 100vw;
+            height: 100vh;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(128, 128, 128, 0.539);
+        }
+        .popup{
+            position: relative;
+            background-color: white;
+            width: 40vw;
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 20px;
+            font-size: var(--size);
+            text-align: center;
+            box-shadow:0 0 7px 0.2px rgba(0, 0, 0, 0.445) ;
+            border-radius: 20px;
+            letter-spacing: 2px;
+            animation: user 0.1s linear ;
+        }
+        @media(max-width:600px){
+            .popup{
+                width: 80%;
+            }
+            td,th{
+                font-size: 1rem;
+            }
+        }
+        .popup h3{
+            font-size: 1.5rem;
+        }
+        .popup input{
+            padding: 5px;
+            border-bottom: 1px black solid;
+            width: 100%;
+        }
+        .popup button{
+            padding: 5px;
+            letter-spacing: 2px;
+            transition: 0.1s;
+            border-radius: 10px;
+            width: 40%;
+            background-color: var(--blue);
+            color: white;
+            border: 1px var(--blue) solid;
+        }
+        .popup span{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            text-align: center;
+            color: rgb(220, 217, 217);
+            border-radius: 50%;
+        }
+        .popup>div{
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+        }
+        .popup i:hover{
+           color: #000;
+        }
+        @keyframes user {
+            0%{
+                opacity: 0.5;
+                scale: 0.7;
+            }
+            100%{
+                opacity: 1;
+                scale: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <div class="popup">
+            <span onclick="CloseAddUser()"><i class="fa-solid fa-circle-xmark"></i></span>
+            <h3>User Details</h3>
+            <input  type="text"   id="userName" maxlength="13"  placeholder="Username">
+            <input  type="text"   id="role"     maxlength="5"   placeholder="Role">
+            <div>
+                    <label ><input  type="radio"  name="status"  id="Active" maxlength="8" value="Active">Active</label>
+                    <label ><input  type="radio"  name="status"  id="inActive" maxlength="8" value="inActive">inActive</label>
+                
+            </div>
+
+            <input  type="number" id="rating"   maxlength="3"  required placeholder="Rating">
+            <button type="submit" onclick="GetUserDetails()">Add</button>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="info">
+            <p>All Users: <span class="usersNum"></span> Projects: <span class="projectsNum">0</span></p>
+            <button class="tablesettings">
+                <span><i class="fa-solid fa-gear"></i></span>
+                Table Settings
+            </button>
+        </div>
+        <div class="editting">
+            <button class="addUser" onclick="OpenAddUser()"><span class="plus">+</span> Add new user</button>
+            <button class="deleteAll" onclick="DeleteAll()"> Delete all</button>
+        </div>
+        <div class="table">
+            <table>
+                <thead>
+                    <th>User</th>
+                    <th>User Role</th>
+                    <th>Status</th>
+                    <th>Rating</th>
+                </thead>
+                <tbody>
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        let addUser  = document.querySelector('addUser');
+        let layout   = document.querySelector('.layout');
+        let userName = document.querySelector('#userName');
+        let role     = document.querySelector('#role');
+        let status   = document.querySelector('input[name=status]:checked')?.value;
+        let rating   = document.querySelector('#rating');
+        let tbody    = document.querySelector('tbody');
+        let usersNum = document.querySelector('.usersNum');
+        let arr      = [];
+        const radios = document.querySelectorAll('input[type="radio"]');
+
+        if(arr.length == 0){
+            arr = JSON.parse(localStorage.getItem('users'));
+        }
+        
+        ShowUserDetails();
+
+        function OpenAddUser(){
+            layout.style.display="flex";
+        }
+
+        function CloseAddUser(){
+            layout.style.display="none";
+        }
+
+        function GetUserDetails(){
+            let status   = document.querySelector('input[name=status]:checked')?.value;
+            
+            let userdetails={
+                username : userName.value,
+                role     : role.value,
+                status   : status,
+                rating   : rating.value
+            };
+            
+            arr.push(userdetails);
+
+            ClearInput();
+            CloseAddUser();
+            SaveArray();
+            ShowUserDetails();
+        }
+
+        function ClearInput(){
+            userName.value='';
+            role.value='';
+            rating.value='';
+            radios.forEach(radio => radio.checked = false);
+        }
+
+        function SaveArray(){
+            localStorage.setItem("users" , JSON.stringify(arr));
+        }
+
+        function ShowUserDetails(){
+            let table ='';
+            for(let i = 0 ; i < arr.length ; i++){
+                table += `<tr>
+                    <td>${arr[i].username}</td>
+                    <td> ${arr[i].role} </td>
+                    <td ><span class="${arr[i].status}"><i class="fa-solid fa-circle"></i></span> ${arr[i].status} </td>
+                    <td> ${arr[i].rating} </td>
+                    </tr>`;
+                }
+                tbody.innerHTML = table;
+        }
+
+        function DeleteAll() {
+            arr.splice(0,arr.length);
+            ShowUserDetails();
+            UsersNum();
+            SaveArray();
+        }
+
+        function UsersNum(){
+            usersNum.textContent=arr.length > 0 ? arr.length :0;
+            
+        }
+
+    </script>
+</body>
+</html>
