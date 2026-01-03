@@ -293,10 +293,10 @@
         let usersNum = document.querySelector('.usersNum');
         let arr      = [];
         const radios = document.querySelectorAll('input[type="radio"]');
-        SaveArray();
         if(arr.length == 0){
             arr = JSON.parse(localStorage.getItem('users'));
         }
+        SaveArray();
         
         ShowUserDetails();
 
@@ -364,4 +364,5 @@
 
     </script>
 </body>
+
 </html>
